@@ -31,9 +31,17 @@ class Sensor_Info(db.Model):
 class Crop_Info(db.Model):
     __tablename__ = "crop_info"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    soil = db.Column(db.String(64), nullable=False)
-    position = db.Column(db.String(64), nullable=False)     
+    name = db.Column(db.String(200), nullable=False)
+    soil = db.Column(db.String(200), nullable=False)
+    position = db.Column(db.String(200), nullable=False)
+    frost = db.Column(db.String(200), nullable=False)
+    feeding = db.Column(db.String(200), nullable=False)
+    companions = db.Column(db.String(200), nullable=False)
+    spacing = db.Column(db.String(200), nullable=False)
+    sow = db.Column(db.String(200), nullable=False)
+    notes = db.Column(db.String(200), nullable=False)       
+    harvesting = db.Column(db.String(200), nullable=False)
+    troubleshooting = db.Column(db.String(200), nullable=False)   
 
 class Environment(db.Model):
     __tablename__ = "sensordata_db"

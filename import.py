@@ -69,7 +69,15 @@ cur.execute('''CREATE TABLE crop_info (
     id SERIAL PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
     soil TEXT NOT NULL,
-    position TEXT NOT NULL);''')
+    position TEXT NOT NULL,
+    frost TEXT NOT NULL,
+    feeding TEXT NOT NULL,
+    companions TEXT NOT NULL,   
+    spacing TEXT NOT NULL,
+    sow TEXT NOT NULL,
+    notes TEXT NOT NULL, 
+    harvesting TEXT NOT NULL,
+    troubleshooting TEXT NOT NULL);''')
 
 conn.commit()
 
@@ -121,8 +129,8 @@ for idx, u in df_crop_info.iterrows():
 
 
     q = cur.execute(
-        '''INSERT INTO crop_info (name, soil, position) VALUES (%s,%s,%s)''',
-        (u.Name, u.Soil, u.Position)
+        '''INSERT INTO crop_info (name, soil, position, frost, feeding, companions, spacing, sow, notes, harvesting, troubleshooting) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''',
+        (u.Name, u.Soil, u.Position, u.Frost, u.Feeding, u.Companions, u.Spacing, u.Sow, u.Notes, u.Harvesting, u.Troubleshooting)
     )
 conn.commit()
         
