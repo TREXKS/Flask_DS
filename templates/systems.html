@@ -1,0 +1,198 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Simple Sidebar - Start Bootstrap Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Digital Spectrum Control Management System</div>
+      <div class="list-group list-group-flush">
+        <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="{{ url_for('systems') }}" class="list-group-item list-group-item-action bg-light">Systems</a>
+        <a href="{{ url_for('units') }}" class="list-group-item list-group-item-action bg-light">Units</a>
+        <a href="{{ url_for('sensors') }}" class="list-group-item list-group-item-action bg-light">Sensors</a>
+        <a href="{{ url_for('crops') }}" class="list-group-item list-group-item-action bg-light">Crops</a>
+        <a href="{{ url_for('profile') }}" class="list-group-item list-group-item-action bg-light">Profile</a>
+        <a href="{{ url_for('support') }}" class="list-group-item list-group-item-action bg-light">Support</a>
+        <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action bg-light">Logout</a>
+
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <section class="dashboard-section" id="signup">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-center">
+                    <!-- <i class="far fa-paper-plane fa-2x mb-2 text-white"></i> -->
+                    <h2 class="text-white mb-5"></h2>
+
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <div class="container-fluid">
+        <h1 class="mt-4">Systems</h1>
+        <p>The system page will consist of the users active systems. Initial start account with by default require 1 system. </p>
+        <p>A user can have mutiple <code>systems</code>. A system will consist of one or more <code>units</code> where a user can see more details for each component</p>
+        <h1>Add System</h1>
+
+
+        <form method="POST" action="/systempost" novalidate>
+            {{ form.hidden_tag() }}
+    
+            <div class="form-group">
+                {{ form.name.label }}<br>
+                {{ form.name(rows='2',cols='25') }}<br>
+                {% for error in form.name.errors %}
+                    <span class="form-error-message">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+              {{ form.userID.label }}<br>
+              {{ form.userID(value=current_user.uid, readonly= "readonly") }}<br>
+              {% for error in form.userID.errors %}
+                  <span class="form-error-message">[{{ error }}]</span>
+              {% endfor %}
+            </div>
+
+          <div class="form-group">
+            {{ form.submit(class="form-submit") }}
+
+          </div>
+    
+    
+        </form>
+
+
+      </div>
+      <style>
+        .accordion {
+          background-color: #eee;
+          color: #444;
+          cursor: pointer;
+          padding: 18px;
+          width: 100%;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+          transition: 0.4s;
+          width: 50%;
+          
+        }
+        
+        .active, .accordion:hover {
+          background-color: #ccc;
+        }
+        
+        .accordion:after {
+          content: '\002B';
+          color: #777;
+          font-weight: bold;
+          float: right;
+          margin-left: 5px;
+        }
+        
+        .active:after {
+          content: "\2212";
+        }
+        
+        .panel {
+          margin-top: 1%;;
+          padding: 0 18px;
+          background-color: white;
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.2s ease-out;
+        }
+
+        * {
+  box-sizing: border-box;
+          }
+
+        </style>
+        <div class="card align-items-center" style="border: none;">
+          {% for system in all_systems %}
+
+            {% if system.user_id == current_user.uid %}
+            <button class="accordion ">{{  system.name  }}</button>
+            <div class="panel ">
+              {% for unit in system.units %}
+                <p><u>{{  unit.name  }}</u></p>
+                <p><strong>sensors: </strong>{% for sensor in unit.sensors %} | {{  sensor.name  }} | {% endfor %}</p>
+                <p><strong>crops: </strong> {% for crop in unit.crops %} | {{  crop.name  }} | {% endfor %}</p>
+              {% endfor %}
+            </div>
+            {% endif %}
+          {% endfor %}
+
+
+  
+
+        </div>
+
+
+        
+        <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+        
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+          });
+        }
+        </script>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>
+
+
+
+{% endblock %}

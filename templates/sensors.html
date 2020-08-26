@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Simple Sidebar - Start Bootstrap Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Digital Spectrum Control Management System</div>
+      <div class="list-group list-group-flush">
+        <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="{{ url_for('systems') }}" class="list-group-item list-group-item-action bg-light">Systems</a>
+        <a href="{{ url_for('units') }}" class="list-group-item list-group-item-action bg-light">Units</a>
+        <a href="{{ url_for('sensors') }}" class="list-group-item list-group-item-action bg-light">Sensors</a>
+        <a href="{{ url_for('crops') }}" class="list-group-item list-group-item-action bg-light">Crops</a>
+        <a href="{{ url_for('profile') }}" class="list-group-item list-group-item-action bg-light">Profile</a>
+        <a href="{{ url_for('support') }}" class="list-group-item list-group-item-action bg-light">Support</a>
+        <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action bg-light">Logout</a>
+
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <section class="dashboard-section" id="signup">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-center">
+                    <!-- <i class="far fa-paper-plane fa-2x mb-2 text-white"></i> -->
+                    <h2 class="text-white mb-5"></h2>
+
+                </div>
+            </div>
+        </div>
+      </section>
+
+
+      <div class="container-fluid">
+        <h1 class="mt-4">Sensors</h1>
+        <p>Here are all the active sensors, what unit they belong too, and what system they belong too.</p>
+        <p>Each <code>Sensor</code> will have it's own page with details and performance. This monitoring and labeling is critical for the <code>Crops</code> success</p>
+        <form method="POST" action="/sensorpost" novalidate>
+          {{ form.hidden_tag() }}
+  
+          <div class="form-group">
+              {{ form.name.label }}<br>
+              {{ form.name(rows='2',cols='25') }}<br>
+              {% for error in form.name.errors %}
+                  <span class="form-error-message">[{{ error }}]</span>
+              {% endfor %}
+          </div>
+
+        <div class="form-group">
+          {{ form.unitID.label }}<br>
+          {{ form.unitID(rows='2',cols='25') }}<br>
+          {% for error in form.unitID.errors %}
+              <span class="form-error-message">[{{ error }}]</span>
+          {% endfor %}
+        </div>
+  
+          {{ form.submit(class="form-submit") }}
+  
+      </form>
+
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Unit</th>
+                <th>System</th>
+                <th>Current</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for sensor in all_sensors %}
+              <tr>
+                <td>{{ sensor.name }}</td>
+                <td>{{ sensor.unit_id }}</td>
+                <td>2011/04/25</td>
+                <td>Good</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <td>Water Sensor 10302</td>
+                <td>Water Unit</td>
+                <td>System 3</td>
+                <td>5/3/20</td>
+
+              </tr>
+              <tr>
+                <td>Water Sensor 10302</td>
+                <td>Water Unit</td>
+                <td>System 3</td>
+                <td>5/3/20</td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>
+
+
+
+{% endblock %}
