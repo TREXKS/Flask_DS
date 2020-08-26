@@ -23,7 +23,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Set up database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:#######@localhost:5432/sensordata_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:TaSaR7!!@localhost:5432/sensordata_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "s14a-key"
 db = SQLAlchemy(app)

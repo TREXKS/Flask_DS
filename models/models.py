@@ -21,6 +21,20 @@ class User(db.Model, UserMixin):
     def get_id(self):
         return (self.uid)
 
+class Sensor_Info(db.Model):
+    __tablename__ = "sensor_info"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    unit = db.Column(db.String(64), nullable=False)
+    manufacturer = db.Column(db.String(64), nullable=False)        
+
+class Crop_Info(db.Model):
+    __tablename__ = "crop_info"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    soil = db.Column(db.String(64), nullable=False)
+    position = db.Column(db.String(64), nullable=False)     
+
 class Environment(db.Model):
     __tablename__ = "sensordata_db"
     id = db.Column(db.Integer, primary_key=True)

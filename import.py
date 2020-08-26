@@ -3,13 +3,12 @@
 import psycopg2
 import pandas as pd
 
-conn = psycopg2.connect("host=localhost dbname=sensordata_db user=postgres password=#######")
+conn = psycopg2.connect("host=localhost dbname=sensordata_db user=postgres password=TaSaR7!!")
 cur = conn.cursor()
 
-cur.execute("DROP TABLE IF EXISTS sensordata_db, users, units, systems, sensors, crops, sensor_unit, subs;")
+cur.execute("DROP TABLE IF EXISTS sensordata_db, users, units, systems, sensors, crops, sensor_unit, subs, sensor_info, crop_info;")
 
 
- 
 cur.execute('''CREATE TABLE users (
     uid SERIAL PRIMARY KEY NOT NULL,
     username TEXT NOT NULL,
@@ -24,13 +23,13 @@ cur.execute('''CREATE TABLE systems (
 
 conn.commit()
 
-
 cur.execute('''CREATE TABLE units (
     id SERIAL PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
     system_id int references systems(id),
     user_id int references users(uid));''')
 
+conn.commit()
 
 cur.execute('''CREATE TABLE sensordata_db (
     id SERIAL PRIMARY KEY NOT NULL,
@@ -54,6 +53,25 @@ cur.execute('''CREATE TABLE sensors (
 
 conn.commit()
 
+# Sensor Info
+
+cur.execute('''CREATE TABLE sensor_info (
+    id SERIAL PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    unit TEXT NOT NULL,
+    manufacturer TEXT NOT NULL);''')
+
+conn.commit()
+
+
+# Crop Info
+cur.execute('''CREATE TABLE crop_info (
+    id SERIAL PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    soil TEXT NOT NULL,
+    position TEXT NOT NULL);''')
+
+conn.commit()
 
 # cur.execute('''
 
@@ -78,7 +96,36 @@ for idx, u in df_sensor.iterrows():
         '''INSERT INTO sensordata_db (airTemp, airHumidity, waterTemp) VALUES (%s,%s,%s)''',
         (u.airTemp, u.airHumidity, u.waterTemp)
     )
-    conn.commit()
+conn.commit()
 
+
+df_sensor_info = pd.read_csv('./static/data/sensors.csv', index_col=0)
+
+for idx, u in df_sensor_info.iterrows():
+
+    # Data cleaning
+
+
+    q = cur.execute(
+        '''INSERT INTO sensor_info (name, unit, manufacturer) VALUES (%s,%s,%s)''',
+        (u.name, u.Unit, u.Manufacturer)
+    )
+conn.commit()
+
+
+df_crop_info = pd.read_csv('./static/data/plant_info.csv', index_col=0)
+
+for idx, u in df_crop_info.iterrows():
+
+    # Data cleaning
+
+
+    q = cur.execute(
+        '''INSERT INTO crop_info (name, soil, position) VALUES (%s,%s,%s)''',
+        (u.Name, u.Soil, u.Position)
+    )
+conn.commit()
+        
+   
 cur.close()
 conn.close()
